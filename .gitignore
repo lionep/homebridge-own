@@ -1,3 +1,5 @@
+node_modules/
+fetched/
 .DS_Store
-node_modules
-
+npm-debug.log
+*.key

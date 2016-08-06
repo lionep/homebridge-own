@@ -4,12 +4,25 @@
   "description": "Homebridge OpenWebNet plugin",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint src",
+    "compile": "babel src/ -d lib/ -s",
+    "compile:watch": "npm run compile -- -w",
+    "prepublish": "npm run compile"
   },
+  "author": "Lionel Penaud",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lionep/homebridge-own.git"
   },
+  "bugs": {
+    "url": "https://github.com/lionep/homebridge-own/issues"
+  },
+  "engines": {
+    "node": ">=4.0.0",
+    "homebridge": ">=0.3.4"
+  },
+  "homepage": "https://github.com/lionep/homebridge-own#readme",
   "keywords": [
     "homebridge-plugin",
     "homebridge",
@@ -18,10 +31,21 @@
     "own",
     "siri"
   ],
-  "author": "Lionel Penaud",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lionep/homebridge-own/issues"
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "hap-nodejs": "^0.3.2",
+    "lodash": "^4.14.1"
   },
-  "homepage": "https://github.com/lionep/homebridge-own#readme"
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-plugin-transform-function-bind": "^6.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "^6.13.2",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0"
+  }
 }
