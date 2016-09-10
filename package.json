@@ -20,7 +20,7 @@
   },
   "engines": {
     "node": ">=4.0.0",
-    "homebridge": ">=0.3.4"
+    "homebridge": ">=0.3.2"
   },
   "homepage": "https://github.com/lionep/homebridge-own#readme",
   "keywords": [
