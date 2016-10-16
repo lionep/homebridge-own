@@ -1,4 +1,4 @@
-import {defaults, times} from 'lodash';
+import {defaults, times, includes} from 'lodash';
 import Promise from 'bluebird';
 import {OwnAccessoryFactory} from './own-accessory';
 import OwnSocketUtils from './utils/own-socket';
@@ -55,11 +55,14 @@ class OwnPlatform {
       // Send light probe
       socket.send('*#1*0##', (err, lights) => {
         if (err) this.log.error(err);
+        const lightIds = [];
         this.log('Lights : %j', lights);
 
         lights.forEach((lightCode) => {
           const light = OwnParser.parseCode(lightCode);
-
+          // Ignore duplicate ids
+          if (includes(lightIds, light.id)) return;
+          lightIds.push(light.id);
           accessories.push(new LightOwnAccessory({
             log: this.log,
             name: `light ${light.id}`,
@@ -77,11 +80,14 @@ class OwnPlatform {
       // Send automation probe
       socket.send('*#2*0##', (err, automations) => {
         if (err) this.log.error(err);
+        const automationIds = [];
         this.log('Automations : %j', automations);
 
         automations.forEach((automationCode) => {
           const automation = OwnParser.parseCode(automationCode);
-
+          // Ignore duplicate ids
+          if (includes(automationIds, automation.id)) return;
+          automationIds.push(automation.id);
           accessories.push(new AutomationOwnAccessory({
             log: this.log,
             name: `automation ${automation.id}`,
@@ -116,10 +122,12 @@ class OwnPlatform {
         .filter((value) => !!value)
         .then((tempSensors) => {
           this.log('Temp sensors : %j', tempSensors);
-
+          const tempSensorIds = [];
           tempSensors.forEach((tempSensorCode) => {
             const tempSensor = OwnParser.parseCode(tempSensorCode);
-
+            // Ignore duplicate ids
+            if (includes(tempSensorIds, tempSensor.id)) return;
+            tempSensorIds.push(tempSensor.id);
             accessories.push(new TempSensorOwnAccessory({
               log: this.log,
               name: `temp sensor ${tempSensor.id}`,
