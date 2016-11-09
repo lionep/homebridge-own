@@ -20,7 +20,10 @@ class OwnPlatform {
       scanAutomations: true,
       scanTempSensors: true,
       maxTempSensors: 20,
-      port: 20000
+      port: 20000,
+      automationDefaultAjarTiming: 26,
+      automationDefaultCompleteTiming: 33,
+      automationTimings: {}
     };
 
     this.config = defaults(config, defaultConfig);
