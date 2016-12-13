@@ -44,7 +44,7 @@ export default class OwnSocketUtils {
       responses.forEach((response, index) => {
         const res = OwnSocketUtils.readResponse(response);
         if (index === 0 && res.ack) return; // Ignore first ack
-        if (res.nack) {
+        if (!res.ack) {
           hasError = true;
           return;
         }

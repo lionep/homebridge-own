@@ -50,29 +50,46 @@ class OwnPlatform {
     };
 
     const socket = new OwnSocketUtils(this.config.server, this.config.port);
+    const scanResults = (lights, callback) => {
+      const lightIds = [];
+      this.log('Lights : %j', lights);
+
+      lights.forEach((lightCode) => {
+        const light = OwnParser.parseCode(lightCode);
+        // Ignore duplicate ids
+        if (includes(lightIds, light.id)) return;
+        lightIds.push(light.id);
+        accessories.push(new LightOwnAccessory({
+          log: this.log,
+          name: `light ${light.id}`,
+          ownId: light.id,
+          config: this.config
+        }));
+      });
+
+      lightsFound = true;
+
+      callback();
+    };
 
     if (this.config.scanLights) {
       // Send light probe
       socket.send('*#1*0##', (err, lights) => {
-        if (err) this.log.error(err);
-        const lightIds = [];
-        this.log('Lights : %j', lights);
-
-        lights.forEach((lightCode) => {
-          const light = OwnParser.parseCode(lightCode);
-          // Ignore duplicate ids
-          if (includes(lightIds, light.id)) return;
-          lightIds.push(light.id);
-          accessories.push(new LightOwnAccessory({
-            log: this.log,
-            name: `light ${light.id}`,
-            ownId: light.id,
-            config: this.config
-          }));
-        });
-
-        lightsFound = true;
-        sendCallback();
+        if (err) {
+          this.log.error(err);
+          if (err.message === 'NACK') {
+            this.log('Retry with prefix *99*1##');
+            socket.send('*99*1##*#1*0##', (err2, lights2) => {
+              if (err2) {
+                this.log('Failure.');
+                return;
+              }
+              scanResults(lights2, sendCallback);
+            });
+            return;
+          }
+        }
+        scanResults(lights, sendCallback);
       });
     }
 
