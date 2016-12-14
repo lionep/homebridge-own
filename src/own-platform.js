@@ -79,7 +79,7 @@ class OwnPlatform {
           this.log.error(err);
           if (err.message === 'NACK') {
             this.log('Retry with prefix *99*1##');
-            socket.send('*99*1##*#1*0##', (err2, lights2) => {
+            socket.send(['*99*1##', '*#1*0##'], (err2, lights2) => {
               if (err2) {
                 this.log('Failure.');
                 return;

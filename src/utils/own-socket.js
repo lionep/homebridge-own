@@ -1,4 +1,4 @@
-import {chain} from 'lodash';
+import {chain, isArray} from 'lodash';
 import net from 'net';
 
 export default class OwnSocketUtils {
@@ -34,7 +34,14 @@ export default class OwnSocketUtils {
       port,
       host
     }, () => {
-      socket.end(message);
+      if (isArray(message)) {
+        message.forEach((messageItem) => {
+          socket.write(messageItem);
+        });
+        socket.end();
+      } else {
+        socket.end(message);
+      }
     });
 
     // Send response on end
@@ -44,7 +51,7 @@ export default class OwnSocketUtils {
       responses.forEach((response, index) => {
         const res = OwnSocketUtils.readResponse(response);
         if (index === 0 && res.ack) return; // Ignore first ack
-        if (!res.ack) {
+        if (res.ack === false) {
           hasError = true;
           return;
         }
