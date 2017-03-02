@@ -1,4 +1,4 @@
-import {defaults, times, includes} from 'lodash';
+import {defaults, times, has, includes} from 'lodash';
 import Promise from 'bluebird';
 import {OwnAccessoryFactory} from './own-accessory';
 import OwnSocketUtils from './utils/own-socket';
@@ -20,7 +20,12 @@ class OwnPlatform {
       scanAutomations: true,
       scanTempSensors: true,
       maxTempSensors: 20,
-      port: 20000
+      port: 20000,
+      bindings: {
+        lights: {},
+        temps: {},
+        automations: {}
+      }
     };
 
     this.config = defaults(config, defaultConfig);
@@ -59,9 +64,13 @@ class OwnPlatform {
         // Ignore duplicate ids
         if (includes(lightIds, light.id)) return;
         lightIds.push(light.id);
+        let name = `light ${light.id}`;
+        if (has(this.config, `bindings.lights.${light.id}`)) {
+          name = this.config.bindings.lights[light.id];
+        }
         accessories.push(new LightOwnAccessory({
           log: this.log,
-          name: `light ${light.id}`,
+          name,
           ownId: light.id,
           config: this.config
         }));
@@ -105,9 +114,13 @@ class OwnPlatform {
           // Ignore duplicate ids
           if (includes(automationIds, automation.id)) return;
           automationIds.push(automation.id);
+          let name = `automation ${automation.id}`;
+          if (has(this.config, `bindings.automations.${automation.id}`)) {
+            name = this.config.bindings.automations[automation.id];
+          }
           accessories.push(new AutomationOwnAccessory({
             log: this.log,
-            name: `automation ${automation.id}`,
+            name,
             ownId: automation.id,
             config: this.config
           }));
@@ -145,9 +158,13 @@ class OwnPlatform {
             // Ignore duplicate ids
             if (includes(tempSensorIds, tempSensor.id)) return;
             tempSensorIds.push(tempSensor.id);
+            let name = `temp sensor ${tempSensor.id}`;
+            if (has(this.config, `bindings.temps.${tempSensor.id}`)) {
+              name = this.config.bindings.temps[tempSensor.id];
+            }
             accessories.push(new TempSensorOwnAccessory({
               log: this.log,
-              name: `temp sensor ${tempSensor.id}`,
+              name,
               ownId: tempSensor.id,
               config: this.config
             }));

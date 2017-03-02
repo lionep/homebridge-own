@@ -16,7 +16,19 @@ In homebridge `config.json`, add this platform :
 {
   "platform" : "own",
   "name" : "OwnServer",
-  "server": "192.168.0.20"
+  "server": "192.168.0.20",
+  "bindings": {
+    "automations": {
+      "11": "Automation #1"
+    },
+    "lights": {
+      "21": "Light room 1",
+      "31": "Light room 2"
+    },
+    "temps": {
+      "1": "Temperature living room"
+    }
+  }
 }
 ```
 
@@ -30,6 +42,7 @@ Other config options :
 - `maxTempSensors`: number, maximum id of temp sensor discovery (default: 20)
 - `port`: number, server TCP port (default: 20000)
 - `timeout`: number, useless at the moment (default: 5)
+- `bindings`: object, initial name of all devices
 
 Have a look at the [homebridge project](https://github.com/nfarina/homebridge)
 
