@@ -1,6 +1,6 @@
 {
   "name": "homebridge-own",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Homebridge OpenWebNet plugin",
   "main": "lib/index.js",
   "scripts": {
