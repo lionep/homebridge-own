@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;;;;;AAAA","file":"index.js","sourcesContent":["import ownPlugin from './own-plugin';\n\nexport default ownPlugin;\n"]}
+{"version":3,"sources":["../src/index.js"],"names":["ownPlugin"],"mappings":";;;;;;AAAA;;;;;;kBAEeA,mB","file":"index.js","sourcesContent":["import ownPlugin from './own-plugin';\n\nexport default ownPlugin;\n"]}
