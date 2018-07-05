@@ -21,6 +21,7 @@ class OwnPlatform {
       scanTempSensors: true,
       maxTempSensors: 20,
       port: 20000,
+      useConn: true,
       bindings: {
         lights: {},
         temps: {},
@@ -54,7 +55,7 @@ class OwnPlatform {
       }
     };
 
-    const socket = new OwnSocketUtils(this.config.server, this.config.port);
+    const socket = new OwnSocketUtils(this.config.server, this.config.port, this.config.useConn);
     const scanResults = (lights, callback) => {
       const lightIds = [];
       this.log('Lights : %j', lights);

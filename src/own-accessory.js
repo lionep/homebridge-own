@@ -42,7 +42,7 @@ class OwnAccessory extends Accessory {
 class LightOwnAccessory extends OwnAccessory {
   getServices() {
     const config = this.options.config;
-    const socket = new OwnSocketUtils(config.server, config.port);
+    const socket = new OwnSocketUtils(config.server, config.port, config.useConn);
 
     const infoService = new Service.AccessoryInformation();
     infoService.setCharacteristic(Characteristic.Name, `Light ${this.ownId}`)
@@ -80,7 +80,7 @@ class AutomationOwnAccessory extends OwnAccessory {
     };
 
     const config = this.options.config;
-    const socket = new OwnSocketUtils(config.server, config.port);
+    const socket = new OwnSocketUtils(config.server, config.port, config.useConn);
 
     const infoService = new Service.AccessoryInformation();
     infoService.setCharacteristic(Characteristic.Name, `Window blind ${this.ownId}`)
@@ -179,7 +179,7 @@ class AutomationOwnAccessory extends OwnAccessory {
 class TempSensorOwnAccessory extends OwnAccessory {
   getServices() {
     const config = this.options.config;
-    const socket = new OwnSocketUtils(config.server, config.port);
+    const socket = new OwnSocketUtils(config.server, config.port, config.useConn);
 
     const infoService = new Service.AccessoryInformation();
     infoService.setCharacteristic(Characteristic.Name, `Temperature ${this.ownId}`)
