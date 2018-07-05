@@ -29,7 +29,7 @@ export default class OwnSocketUtils {
   }
 
   static send(host, port, useConn, message, callback) {
-    console.log(`Establishing connection to ${host}`);
+    // console.log(`Establishing connection to ${host}`);
     const socket = new net.Socket();
     let responses = [];
 
@@ -50,12 +50,8 @@ export default class OwnSocketUtils {
               return reject();
             });
           })
-          .tap(() => {
-            connAck = true;
-            console.log('Connected.');
-          })
           .then(() => {
-            console.log('Send CONN');
+            // console.log('Send CONN');
             socket.write(OwnSocketUtils.CONN);
             return new Promise((resolve, reject) => {
               socket.once('data', (buf) => {
@@ -67,19 +63,16 @@ export default class OwnSocketUtils {
               });
             });
           })
-          .tap(() => {
-            console.log('Authorized.');
-          })
         })
         .then(() => {
           if (isArray(message)) {
             message.forEach((messageItem) => {
-              console.log(`write ${messageItem}`);
+              // console.log(`write ${messageItem}`);
               socket.write(messageItem);
             });
             // socket.end();
           } else {
-            console.log(`write single ${message}`);
+            // console.log(`write single ${message}`);
             socket.write(message);
             // socket.end();
           }
@@ -90,7 +83,7 @@ export default class OwnSocketUtils {
 
     // Send response on end
     socket.on('end', () => {
-      console.log('end');
+      // console.log('end');
       let hasError = false;
       const returnedResponses = [];
       responses.forEach((response, index) => {
@@ -100,12 +93,12 @@ export default class OwnSocketUtils {
         //   return; // Ignore first ack
         // }
         if (res.ack === false) {
-          console.log('NACK');
+          // console.log('NACK');
           hasError = true;
           return;
         }
         if (res.msg) {
-          console.log(`RES : ${res.msg}`);
+          // console.log(`RES : ${res.msg}`);
           returnedResponses.push(res.msg);
         }
       });
